@@ -13,7 +13,7 @@
 		
 		function __construct()
 		{
-		   $this->adodb = ADONewConnection('mysql'); 
+		   $this->adodb = ADONewConnection('mysqli'); 
 		}
 		
 		public function getADOdb()

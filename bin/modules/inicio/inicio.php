@@ -4,11 +4,7 @@ session_start();
         header("location: ../../../login.php");
     exit;
         }
-        if($_SESSION['perfil'] != 'Administrador')
-        {
-          die('No tiene los permisos para este modulo');
-
-        }
+     
   $active_new="active";
   $active_solicitud="";
   $active_clientes="";

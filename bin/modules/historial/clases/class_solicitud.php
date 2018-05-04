@@ -2,43 +2,13 @@
 session_start();
 include '../../../../core.php';
 include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php'; 
- class Solicitud extends ADOdb_Active_Record{}
- class Seguimiento extends ADOdb_Active_Record{}
+class Seguimiento extends ADOdb_Active_Record{}
+
 class regSolicitud
 {
-  public $id;
- // public $user = $_SESSION['user_id'];
 
-public function reg_solicitud($id,$tipo,$descripcion, $fecha)
-    {
-       
-        $reg              = new Solicitud('solicitud');
-        $reg->user_id      = $id;
-        $reg->id_tiposolicitud = $tipo;
-        $reg->descripcion_solicitud = $descripcion;
-        $reg->fecha = $fecha;
-        $reg->estado_solicitud = "Activa";
-        $reg->Save();
-        $this->id = $reg->id_solicitud;
-        return $this->id;
-    }
 
-    public function reg_seguimiento()
-    {
-      date_default_timezone_set('America/Bogota');
-        $fecha = date('Y-m-d');
-        $hora =  date ("h:i:s");
-        $reg              = new Seguimiento('seguimiento_solicitud');
-        $reg->id_solicitud      = $this->id;
-        $reg->fecha = $fecha;
-        $reg->hora = $hora;
-        $reg->id_estado = 1;
-        $reg->descripcion_estado = 'La solicitud fue recibida con exito, pronto recibira respuesta.';
-        $reg->Save();
-        
-    }
-
-     public function reg_seguimientonew($id,$solicitud ,$estado, $descripcion)
+    public function reg_seguimiento($id,$solicitud ,$estado, $descripcion)
     {
       date_default_timezone_set('America/Bogota');
         $fecha = date('Y-m-d');
@@ -55,7 +25,7 @@ public function reg_solicitud($id,$tipo,$descripcion, $fecha)
     }
 
 
-public function listSolicitud()
+public function listSolicitud($id)
 {
 	$con = App::$base;
     $sql = "SELECT 
@@ -64,40 +34,44 @@ public function listSolicitud()
             `users`.`lastname`,
             `tipo_solicitud`.`descripcion` AS tipo,
             `solicitud`.`fecha`,
-            `solicitud`.`estado_solicitud`,
             `solicitud`.`id_solicitud`,
+            CONCAT('PQR # ',`solicitud`.`id_solicitud`) AS numero,
+            `solicitud`.`estado_solicitud`,
             `seguimiento_solicitud`.`fecha` as fecha1,
             `seguimiento_solicitud`.`hora` as hora,
             `estado`.`descripcion` as estado_descripcion,
              `seguimiento_solicitud`.`id_seguimiento`,        
+             
                \"
-              <button type=\'button\' class=\'btn btn-success btn-sm btn_edit\' data-title=\'Edit\' data-toggle=\'modal\' data-target=\'#myModal\' >
-               <span class=\'glyphicon glyphicon-eye-open\'></span></button>
+              <button type=\'button\' class=\'btn btn-info btn-sm btn_sol\' data-title=\'Edit\' data-toggle=\'modal\' data-target=\'#myModalSol\' >
+               <span class=\'glyphicon glyphicon-play\'></span></button>
                </div>
                 \" 
-               as editar                   
+               as editar                
             FROM
               `solicitud`
               INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
               INNER JOIN `tipo_solicitud` ON (`solicitud`.`id_tiposolicitud` = `tipo_solicitud`.`id_tiposolicitud`)
               INNER JOIN `seguimiento_solicitud` ON (`solicitud`.`id_solicitud` = `seguimiento_solicitud`.`id_solicitud`)
               INNER JOIN `estado` ON (`estado`.`id_estado` = `seguimiento_solicitud`.`id_estado`)
-              WHERE
-             `users`.`user_id` = ?
-              AND
-             `solicitud`.`estado_solicitud` != ? ";
+              WHERE             
+              `seguimiento_solicitud`.`id_solicitud` = ?
+              order by `seguimiento_solicitud`.`id_seguimiento` desc
+               ";
 
-		$rs = $con->dosql($sql, array($_SESSION['user_id'], 'Inactiva'));
+		$rs = $con->dosql($sql, array($id));
         $tabla = '<table id="myTable" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="1" class="display" >
                         <thead>
                         <tr>
                         <th id="yw9_c0">#</th>
-                        <th id="yw9_c1">Nombres</th>
+                         <!--  <th id="yw9_c1">Nombres</th>
                         <th id="yw9_c2">Apellidos</th>
-                        <th id="yw9_c4">Descripcion</th>
+                     <th id="yw9_c4">Descripcion</th>-->
                         <th id="yw9_c5">Fecha</th>
-                        <th id="yw9_c5">Estado</th>
-                        <th id="yw9_c5">Ver</th>
+                        <th id="yw9_c6">Hora</th>
+                        <th id="yw9_c7">Estado</th>
+                        <th id="yw9_c8">Seg</th>
+                   
                         </tr>
                         </thead>
                         <tbody>';
@@ -109,15 +83,18 @@ public function listSolicitud()
                       if($rs->fields['estado_descripcion']=='EN TRAMITE'){
                           $text_estado="En Tramite";
                           $label_class='label-warning';}
-                      if($rs->fields['estado_descripcion']=='RESUELTA'){
-                          $text_estado="Resuelta";
-                          $label_class='label-info';}
+                        if($rs->fields['estado_descripcion']=='RESUELTA'){
+                            $text_estado="Resuelta";
+                            $label_class='label-info';}
+                            if($rs->fields['estado_descripcion']=='TERMINADA'){
+                              $text_estado="Terminada";
+                              $label_class='label-success';}
 
                    	$tabla.='<tr >  
                             <td>                            
-                                '.utf8_encode($rs->fields['id_seguimiento']).'
+                                '.utf8_encode($rs->fields['numero']).'
                             </td>
-                            <td>                            
+                          <!--  <td>                            
                                 '.utf8_encode($rs->fields['firstname']).'
                             </td>
                             <td>                            
@@ -125,9 +102,12 @@ public function listSolicitud()
                             </td>
                             <td>                            
                                 '.utf8_encode($rs->fields['tipo']).'
-                            </td>
+                            </td>-->
                             <td>                            
                                 '.utf8_encode($rs->fields['fecha1']).'
+                            </td> 
+                             <td>                            
+                                '.utf8_encode($rs->fields['hora']).'
                             </td> 
                             <td align="center">                            
                              <span class="label '.$label_class.'">'.$text_estado.'</span>
@@ -136,12 +116,100 @@ public function listSolicitud()
                             <td width= "30" onclick="editar('.$rs->fields['id_seguimiento'].','.$rs->fields['id_solicitud'].')">                            
                                 '.utf8_encode($rs->fields['editar']).'
                             </td>
+                            
 
                             ' ;                                                                               
                             
             $tabla.= '</tr>';                                     
 	
 	               $rs->MoveNext();	    
+                   }  
+            
+        $tabla.="</tbody></table>";
+        return $tabla;
+
+}
+
+public function listSolicitud2()
+{
+  $con = App::$base;
+    $sql = "SELECT 
+            `solicitud`.`id_solicitud`,
+            `tipo_solicitud`.`descripcion`,
+            CONCAT('PQR # ',`solicitud`.`id_solicitud`) AS numero,
+            `users`.`firstname`,
+            `users`.`user_id`,
+            `users`.`lastname`,
+            CONCAT(`users`.`firstname`, ' ',
+            `users`.`lastname`) AS nombre_completo,
+            `solicitud`.`fecha`,
+            `solicitud`.`estado_solicitud`,                    
+               \"
+              <button type=\'button\' class=\'btn btn-info btn-sm btn_sol\' data-title=\'Edit\'>
+               <span class=\'glyphicon glyphicon-play\'></span></button>
+               </div>
+                \" 
+               as ir               
+            FROM
+            `tipo_solicitud`
+            INNER JOIN `solicitud` ON (`tipo_solicitud`.`id_tiposolicitud` = `solicitud`.`id_tiposolicitud`)
+            INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
+            where `users`.`user_id` = ?
+            order by  `solicitud`.`id_solicitud` desc ";
+
+    $rs = $con->dosql($sql, array($_SESSION['user_id']));
+        $tabla = '<table id="myTable1" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="2" class="display" >
+                        <thead>
+                        <tr>
+                        <th id="yw9_c0">#</th>
+                        <th id="yw9_c1">Tipo Solicitud</th>
+                        <th id="yw9_c2">Usuario</th>
+                        <th id="yw9_c3">Fecha</th>
+                        <th id="yw9_c4">Estado</th>
+                        <th id="yw9_c5">Ver</th>                   
+                        </tr>
+                        </thead>
+                        <tbody>';
+              while (!$rs->EOF) 
+                   {
+                    if ($rs->fields['estado_solicitud']=='Activa'){
+                          $text_estado="Activa";
+                          $label_class='label-primary';}
+                      
+                      if($rs->fields['estado_solicitud']=='Inactiva'){
+                          $text_estado="Inactiva";
+                          $label_class='label-danger';}
+
+                          if($rs->fields['estado_solicitud']=='Espera'){
+                            $text_estado="En espera";
+                            $label_class='label-info';}
+
+                    $tabla.='<tr >  
+                            <td>                            
+                                '.utf8_encode($rs->fields['numero']).'
+                            </td>
+                            <td>                            
+                                '.utf8_encode($rs->fields['descripcion']).'
+                            </td>
+                            <td>                            
+                                '.utf8_encode($rs->fields['nombre_completo']).'
+                            </td>
+                            <td>                            
+                                '.utf8_encode($rs->fields['fecha']).'
+                            </td>                            
+                            <td align="center">                            
+                             <span class="label '.$label_class.'">'.$text_estado.'</span>
+                             </td>  
+                                                    
+                            <td width= "30" onclick="listar_seguimiento('.$rs->fields['id_solicitud'].')">                            
+                                '.utf8_encode($rs->fields['ir']).'
+                            </td>                            
+
+                            ' ;                                                                               
+                            
+            $tabla.= '</tr>';                                     
+  
+                 $rs->MoveNext();     
                    }  
             
         $tabla.="</tbody></table>";

@@ -11,7 +11,7 @@ $disc   = new regSolicitud();
 switch ($opcion) {
 	case '1':
 
-		$disc->reg_seguimientonew($id_r,$solicitud ,$estado, $nuevo);
+		$disc->reg_seguimiento($id_r,$solicitud ,$estado, $nuevo);
 		break;
 	case '2':	
 		$res = $disc->buscar($id);

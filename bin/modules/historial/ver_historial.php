@@ -11,8 +11,8 @@ session_start();
 
         
 
-  $active_new="active";
-  $active_solicitud="";
+  $active_new="";
+  $active_solicitud="active";
   $active_clientes="";
   $active_usuarios="";  
   $title="Solicitud";
@@ -28,8 +28,9 @@ session_start();
     <script src="../../../lib/js/jquery.dataTables.min.js?v=<?php echo str_replace('.', '', microtime(true)); ?>"></script>
     <script src='../../../lib/data_table.js?v=<?php echo str_replace('.', '', microtime(true)); ?>'></script>
     
-     <script src='js/solicitud.js?v=<?php echo str_replace('.', '', microtime(true)); ?>'></script>
-      <script src='js/modal_ver.js?v=<?php echo str_replace('.', '', microtime(true)); ?>'></script>
+     <script src='js/admin_solicitud.js?v=<?php echo str_replace('.', '', microtime(true)); ?>'></script>
+    
+      <script src='js/modal_admin.js?v=<?php echo str_replace('.', '', microtime(true)); ?>'></script>
       <link href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
      <style>
              #pre-load-web {
@@ -71,35 +72,17 @@ session_start();
   include("../../../plantilla/navbar.php"); //var_dump($_SESSION['user_id']) ;
   ?>  
 <div class="container-fluid">
-             <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="panel panel-primary">
-                    <div class="panel-heading"><h5>Realizar Peticion Queja o Reclamo</h5></div>
+                  <div class="panel-heading"><h5>Peticiones</h5></div>
                     <div class="panel-body">
-                        <form id="form_solicitud" action="clases/control_solicitud.php">
-                            <div class="col-md-12">
-                              <label for="tipo">Elija el tipo de Solicitud:</label>
-                               <select id="id_tiposolicitud" name="id_tiposolicitud" class="form-control">
-                                <option value="-1" selected>---Seleccione una Opción---</option>
-                                <option value="1">PETICIÓN</option>
-                                <option value="2">QUEJA</option>
-                                <option value="3">RECLAMO</option>
-                                <option value='4'>VIVENCIA</option>
-                               </select><br>                        
-                            </div>  
-                            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
-                            <div class="col-md-12">
-                              <label for="descripcion_solicitud">Nos gustaria conocer el motivo de su queja o reclamo:</label>
-                              <textarea class="form-control" rows="10" id="descripcion_solicitud" name="descripcion_solicitud" required="true"></textarea><br>
-                                </div>                                                              
-                                  <input id="fecha" name="fecha" type="hidden" value="<?php echo date('Y-m-d');?>" >      
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Enviar Datos</button>
-                            </div>
-                        </form>
+                      <div class="table-responsive"> 
+                         <div id="ver_cargas2"></div>
+                       </div>
                     </div>
                 </div>
             </div>
-               <div class="col-md-8">
+               <div class="col-md-6">
                 <div class="panel panel-primary">
                    <div class="panel-heading"><h5>Historial PQR</h5></div>
                     <div class="panel-body">
@@ -111,8 +94,10 @@ session_start();
             </div>
 </div>
 
+
 <?php
-include 'modal_ver.php';
+//include 'modal_ver.php';
+include 'modal_solucionar.php';
 ?>
   <?php
     include '../../../plantilla/footer1.php';

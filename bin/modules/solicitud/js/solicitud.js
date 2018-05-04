@@ -77,7 +77,7 @@ $('#form_solicitud').submit(function (e)
     });
  });
 
-function editar(id)
+function editar(id, solicitud)
 {   
     
     $.ajax({    url: "clases/control_crud.php",
@@ -89,6 +89,8 @@ function editar(id)
       //console.log(data) 
     $("#descripcion").val(data.descripcion_estado);
     $("#descripcion_sol").val(data.descripcion_solicitud);
+    $("#id_sol").val(solicitud);
+    $("#id").val(id); 
    
             
     });    

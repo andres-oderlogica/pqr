@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-05-2018 a las 05:00:32
+-- Tiempo de generación: 31-03-2018 a las 17:29:46
 -- Versión del servidor: 5.6.25
 -- Versión de PHP: 5.6.11
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `encuesta` (
 CREATE TABLE IF NOT EXISTS `estado` (
   `id_estado` int(11) NOT NULL,
   `descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `estado`
@@ -74,8 +74,7 @@ CREATE TABLE IF NOT EXISTS `estado` (
 INSERT INTO `estado` (`id_estado`, `descripcion`) VALUES
 (1, 'ENVIADA'),
 (2, 'EN TRAMITE'),
-(3, 'RESUELTA'),
-(4, 'TERMINADA');
+(3, 'RESUELTA');
 
 -- --------------------------------------------------------
 
@@ -115,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `seguimiento_solicitud` (
   `hora` time DEFAULT NULL,
   `id_estado` int(11) DEFAULT NULL,
   `descripcion_estado` text
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `seguimiento_solicitud`
@@ -125,17 +124,7 @@ INSERT INTO `seguimiento_solicitud` (`id_seguimiento`, `id_solicitud`, `fecha`, 
 (41, 25, '2018-03-30', '02:13:41', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
 (42, 25, '2018-03-30', '02:23:57', 2, 'esta en seguimiento'),
 (43, 25, '2018-03-30', '02:26:07', 3, 'ya se soluiciono'),
-(44, 26, '2018-03-30', '02:38:55', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
-(45, 26, '2018-05-03', '07:06:58', NULL, 'respuesta no solucionada'),
-(46, 26, '2018-05-03', '07:07:21', 2, 'respuesta no soluicionada'),
-(47, 26, '2018-05-03', '07:08:49', 2, 'otra respuesta'),
-(48, 26, '2018-05-03', '07:09:03', 2, 'otra y nada'),
-(49, 26, '2018-05-03', '07:10:47', 3, 'ahora si'),
-(50, 27, '2018-05-03', '07:13:18', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
-(57, 27, '2018-05-03', '07:39:18', 2, 'todvia no'),
-(58, 27, '2018-05-03', '07:49:40', 3, 'si ya'),
-(59, 27, '2018-05-03', '08:09:34', 2, 'aun no se me soluciona'),
-(60, 27, '2018-05-03', '08:13:00', 4, 'ahora si ya');
+(44, 26, '2018-03-30', '02:38:55', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.');
 
 --
 -- Disparadores `seguimiento_solicitud`
@@ -144,9 +133,6 @@ DELIMITER $$
 CREATE TRIGGER `cambia_estado_solicitud` BEFORE INSERT ON `seguimiento_solicitud`
  FOR EACH ROW BEGIN
 IF NEW.id_estado = 3 THEN
-       UPDATE `solicitud` SET estado_solicitud = 'Espera' WHERE id_solicitud = NEW.id_solicitud;
-    END IF;
-IF NEW.id_estado = 4 THEN
        UPDATE `solicitud` SET estado_solicitud = 'Inactiva' WHERE id_solicitud = NEW.id_solicitud;
     END IF;
 END
@@ -166,8 +152,8 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   `sufijo_solicitud` varchar(48) DEFAULT NULL,
   `descripcion_solicitud` varchar(10000) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `estado_solicitud` enum('Activa','Inactiva','Espera') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+  `estado_solicitud` enum('Activa','Inactiva') DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `solicitud`
@@ -175,8 +161,7 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
 
 INSERT INTO `solicitud` (`id_solicitud`, `user_id`, `id_tiposolicitud`, `sufijo_solicitud`, `descripcion_solicitud`, `fecha`, `estado_solicitud`) VALUES
 (25, 83, 1, 'SOLICITUD-0000', 'esta es una peticion de prueba', '2018-03-30', 'Inactiva'),
-(26, 83, 2, 'SOLICITUD-0000', 'ESTA ES UNA QUEJA', '2018-03-30', 'Inactiva'),
-(27, 83, 1, 'SOLICITUD-0000', 'Esta es una prueba inicial', '2018-05-04', 'Inactiva');
+(26, 83, 2, 'SOLICITUD-0000', 'ESTA ES UNA QUEJA', '2018-03-30', 'Activa');
 
 --
 -- Disparadores `solicitud`
@@ -199,7 +184,7 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS `tipo_solicitud` (
   `id_tiposolicitud` int(11) NOT NULL,
   `descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tipo_solicitud`
@@ -208,8 +193,7 @@ CREATE TABLE IF NOT EXISTS `tipo_solicitud` (
 INSERT INTO `tipo_solicitud` (`id_tiposolicitud`, `descripcion`) VALUES
 (1, 'PETICION'),
 (2, 'QUEJA'),
-(3, 'RECLAMO'),
-(4, 'VIVENCIA');
+(3, 'RECLAMO');
 
 -- --------------------------------------------------------
 
@@ -341,7 +325,7 @@ ALTER TABLE `encuesta`
 -- AUTO_INCREMENT de la tabla `estado`
 --
 ALTER TABLE `estado`
-  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `preguntas`
 --
@@ -356,17 +340,17 @@ ALTER TABLE `preguntas_encuesta`
 -- AUTO_INCREMENT de la tabla `seguimiento_solicitud`
 --
 ALTER TABLE `seguimiento_solicitud`
-  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT de la tabla `tipo_solicitud`
 --
 ALTER TABLE `tipo_solicitud`
-  MODIFY `id_tiposolicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_tiposolicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --

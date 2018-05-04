@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-05-2018 a las 05:00:32
+-- Tiempo de generación: 12-03-2018 a las 15:01:38
 -- Versión del servidor: 5.6.25
 -- Versión de PHP: 5.6.11
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `encuesta` (
 CREATE TABLE IF NOT EXISTS `estado` (
   `id_estado` int(11) NOT NULL,
   `descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `estado`
@@ -74,8 +74,7 @@ CREATE TABLE IF NOT EXISTS `estado` (
 INSERT INTO `estado` (`id_estado`, `descripcion`) VALUES
 (1, 'ENVIADA'),
 (2, 'EN TRAMITE'),
-(3, 'RESUELTA'),
-(4, 'TERMINADA');
+(3, 'RESUELTA');
 
 -- --------------------------------------------------------
 
@@ -115,43 +114,15 @@ CREATE TABLE IF NOT EXISTS `seguimiento_solicitud` (
   `hora` time DEFAULT NULL,
   `id_estado` int(11) DEFAULT NULL,
   `descripcion_estado` text
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `seguimiento_solicitud`
 --
 
 INSERT INTO `seguimiento_solicitud` (`id_seguimiento`, `id_solicitud`, `fecha`, `hora`, `id_estado`, `descripcion_estado`) VALUES
-(41, 25, '2018-03-30', '02:13:41', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
-(42, 25, '2018-03-30', '02:23:57', 2, 'esta en seguimiento'),
-(43, 25, '2018-03-30', '02:26:07', 3, 'ya se soluiciono'),
-(44, 26, '2018-03-30', '02:38:55', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
-(45, 26, '2018-05-03', '07:06:58', NULL, 'respuesta no solucionada'),
-(46, 26, '2018-05-03', '07:07:21', 2, 'respuesta no soluicionada'),
-(47, 26, '2018-05-03', '07:08:49', 2, 'otra respuesta'),
-(48, 26, '2018-05-03', '07:09:03', 2, 'otra y nada'),
-(49, 26, '2018-05-03', '07:10:47', 3, 'ahora si'),
-(50, 27, '2018-05-03', '07:13:18', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
-(57, 27, '2018-05-03', '07:39:18', 2, 'todvia no'),
-(58, 27, '2018-05-03', '07:49:40', 3, 'si ya'),
-(59, 27, '2018-05-03', '08:09:34', 2, 'aun no se me soluciona'),
-(60, 27, '2018-05-03', '08:13:00', 4, 'ahora si ya');
-
---
--- Disparadores `seguimiento_solicitud`
---
-DELIMITER $$
-CREATE TRIGGER `cambia_estado_solicitud` BEFORE INSERT ON `seguimiento_solicitud`
- FOR EACH ROW BEGIN
-IF NEW.id_estado = 3 THEN
-       UPDATE `solicitud` SET estado_solicitud = 'Espera' WHERE id_solicitud = NEW.id_solicitud;
-    END IF;
-IF NEW.id_estado = 4 THEN
-       UPDATE `solicitud` SET estado_solicitud = 'Inactiva' WHERE id_solicitud = NEW.id_solicitud;
-    END IF;
-END
-$$
-DELIMITER ;
+(13, 15, '2018-02-28', '08:16:57', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.'),
+(14, 16, '2018-03-06', '06:45:01', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.');
 
 -- --------------------------------------------------------
 
@@ -163,32 +134,19 @@ CREATE TABLE IF NOT EXISTS `solicitud` (
   `id_solicitud` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `id_tiposolicitud` int(11) DEFAULT NULL,
-  `sufijo_solicitud` varchar(48) DEFAULT NULL,
   `descripcion_solicitud` varchar(10000) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `estado_solicitud` enum('Activa','Inactiva','Espera') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+  `estado_solicitud` enum('Activa','Inactiva') DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `solicitud`
 --
 
-INSERT INTO `solicitud` (`id_solicitud`, `user_id`, `id_tiposolicitud`, `sufijo_solicitud`, `descripcion_solicitud`, `fecha`, `estado_solicitud`) VALUES
-(25, 83, 1, 'SOLICITUD-0000', 'esta es una peticion de prueba', '2018-03-30', 'Inactiva'),
-(26, 83, 2, 'SOLICITUD-0000', 'ESTA ES UNA QUEJA', '2018-03-30', 'Inactiva'),
-(27, 83, 1, 'SOLICITUD-0000', 'Esta es una prueba inicial', '2018-05-04', 'Inactiva');
-
---
--- Disparadores `solicitud`
---
-DELIMITER $$
-CREATE TRIGGER `sufijo` BEFORE INSERT ON `solicitud`
- FOR EACH ROW BEGIN
-set @num = new.id_solicitud;
-SET NEW.sufijo_solicitud = CONCAT("SOLICITUD-000",'',@num);
-END
-$$
-DELIMITER ;
+INSERT INTO `solicitud` (`id_solicitud`, `user_id`, `id_tiposolicitud`, `descripcion_solicitud`, `fecha`, `estado_solicitud`) VALUES
+(14, 1, 1, 'PRIMERA PETICION DE PRUEBA', '2018-03-01', 'Inactiva'),
+(15, 1, 1, 'ESTA ES UNA PRUEBA DE PETICION', '2018-03-01', 'Activa'),
+(16, 1, 2, 'esta es una queja', '2018-03-07', 'Activa');
 
 -- --------------------------------------------------------
 
@@ -199,7 +157,7 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS `tipo_solicitud` (
   `id_tiposolicitud` int(11) NOT NULL,
   `descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tipo_solicitud`
@@ -208,8 +166,7 @@ CREATE TABLE IF NOT EXISTS `tipo_solicitud` (
 INSERT INTO `tipo_solicitud` (`id_tiposolicitud`, `descripcion`) VALUES
 (1, 'PETICION'),
 (2, 'QUEJA'),
-(3, 'RECLAMO'),
-(4, 'VIVENCIA');
+(3, 'RECLAMO');
 
 -- --------------------------------------------------------
 
@@ -229,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `direccion` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telefono` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `identificacion` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user data';
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user data';
 
 --
 -- Volcado de datos para la tabla `users`
@@ -240,8 +197,7 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `user_name`, `user_pass
 (76, 'carlos', 'Empleado', 'empleado1', '$2y$10$X7ha4rCPbpxBqYwAzfft8uJvhhx5pTfnPhj6.lmY06P80X6Do24yi', 'emp@gmail.com', '2017-11-09 01:10:52', 'Empleado', NULL, NULL, NULL),
 (77, 'gerente', 'Gerente', 'gerente', '$2y$10$f71nf0yAI6XT1nyTZDyjVOb223BLYiuXE2sopZFODXqr47LHq0oS2', 'ge@gmail.com', '2017-11-09 01:13:01', 'Gerente', NULL, NULL, NULL),
 (81, 'andres', 'Empleado', 'admin1', '$2y$10$v9NaFOF6vcbRhU.BvVpMZ..4FMBz0iKwENTU3bB5Y9rN2S.xYNRCe', 'o@gmail.com', '2018-01-19 04:01:59', 'Empleado', NULL, NULL, NULL),
-(82, 'alex', 'paz', 'oscar', '$2y$10$sx291m8coHDKvj4CoH4kPeCWND8HkAqhRXVcJp/B1Q8oymUUKZUza', 'oscar@gmail.com', '2018-01-19 22:02:04', 'Empleado', NULL, NULL, NULL),
-(83, 'JUAN', 'ANDRES', 'juan', '$2y$10$G3pUOi9pyp1qO/L76QYJiuSXfmlRN3xc4nNUAqfp1Sz4wHd86CiGC', 'juan@gmail.com', '2018-03-13 22:57:45', 'Empleado', NULL, NULL, NULL);
+(82, 'alex', 'paz', 'oscar', '$2y$10$sx291m8coHDKvj4CoH4kPeCWND8HkAqhRXVcJp/B1Q8oymUUKZUza', 'oscar@gmail.com', '2018-01-19 22:02:04', 'Empleado', NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -341,7 +297,7 @@ ALTER TABLE `encuesta`
 -- AUTO_INCREMENT de la tabla `estado`
 --
 ALTER TABLE `estado`
-  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `preguntas`
 --
@@ -356,22 +312,22 @@ ALTER TABLE `preguntas_encuesta`
 -- AUTO_INCREMENT de la tabla `seguimiento_solicitud`
 --
 ALTER TABLE `seguimiento_solicitud`
-  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `tipo_solicitud`
 --
 ALTER TABLE `tipo_solicitud`
-  MODIFY `id_tiposolicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_tiposolicitud` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index',AUTO_INCREMENT=84;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index',AUTO_INCREMENT=83;
 --
 -- Restricciones para tablas volcadas
 --
@@ -401,7 +357,7 @@ ALTER TABLE `preguntas_encuesta`
 --
 ALTER TABLE `seguimiento_solicitud`
   ADD CONSTRAINT `idx_estado_fk` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `idx_solicitud_fk` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `idx_solicitud_fk` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `solicitud`

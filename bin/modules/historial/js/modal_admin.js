@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 $("#btn_save").click(function(){
   var estado1 = $('input:radio[name=estado]:checked').val();
-  $.ajax({
+	$.ajax({
     url: "clases/control_crud.php",
     type: "POST",
     dataType: "json",
@@ -21,7 +21,7 @@ $("#btn_save").click(function(){
       $('#estado').val("")          
              })
       .always(function(){
-        $('#myModal').modal('toggle');
+        $('#myModalSol').modal('toggle');
       parent.verCargas($('#id_sol').val()); 
 
       })

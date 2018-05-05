@@ -5,15 +5,18 @@ $mail = new PHPMailer;
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Host       = "smtp.gmail.com"; // set the SMTP server
 $mail->Port       = 587;   */
-$mail->IsSMTP();   
+//$mail->IsSMTP();   
+$mail->IsMail();
 $mail ->SMTPSecure  =  'ssl' ;                         // telling the class to use SMTP
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Host       = "smtp.gmail.com"; // set the SMTP server
 $mail->Port       = 465;                     // set the SMTP port
-$mail->Username   = "boanergespadres@gmail.com"; // SMTP account username
-$mail->Password   = "boanerges.2017";        // SMTP account password
+//$mail->Username   = "boanergespadres@gmail.com"; // SMTP account username
+//$mail->Password   = "boanerges.2017";        // SMTP account password
+$mail->Username   = "juanandres12102018@gmail.com"; // SMTP account username
+$mail->Password   = "andrescamila";        // SMTP account password
 $mail->setFrom('juanandres1210@gmail.com', 'Andres');
-$mail->addAddress('juanandres12102018@gmail.com', 'Recibe');
+$mail->addAddress('juanandres1210@gmail.com', 'Recibe');
 $mail->Subject  = 'First PHPMailer Message';
 $mail->Body     = 'Hi! This is my first e-mail sent through PHPMailer.';
 if(!$mail->send()) {

@@ -2,53 +2,42 @@
 include '../../../../core.php';
 require '../PHPMailerAutoload.php';
 include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php'; 
- class Estudiante extends ADOdb_Active_Record{}
+ class Notificacion extends ADOdb_Active_Record{}
 class listCorreo
 {
 
-public function reg_estudiante($codigo,$identificacion,$primer_apellido,$segundo_apellido,$primer_nombre,$segundo_nombre,$direccion,$telefono,$email,$discapacidad,$fecha_nacimiento, $usuario)  
+public function reg_notificacion($id, $descripcion)  
      
     {
-      //var_dump($codigo,$identificacion,$primer_apellido,$segundo_apellido,$primer_nombre,$segundo_nombre,$direccion,$telefono,$email,$discapacidad,$fecha_nacimiento);
-       
-        $reg              = new Estudiante('estudiante');
-        $reg->codigo              =$codigo;       
-        $reg->identificacion      = $identificacion;
-        $reg->primer_apellido = $primer_apellido;
-        $reg->segundo_apellido = $segundo_apellido;
-        $reg->primer_nombre = $primer_nombre;
-        $reg->segundo_nombre = $segundo_nombre;
-        $reg->direccion = $direccion;
-        $reg->telefono = $telefono;
-        $reg->email = $email;
-        $reg->discapacidad = $discapacidad;
-        $reg->fecha_nacimiento = $fecha_nacimiento;        
-        $reg->id_estado = 2;  
-        $reg->usuario = $usuario;      
+        date_default_timezone_set('America/Bogota');
+        $fecha = date('Y-m-d');
+        $hora =  date ("h:i:s");
+            
+        $reg              = new Notificacion('notificacion');
+        $reg->id_solicitud              =$id;       
+        $reg->fecha_notificacion        = $fecha;
+        $reg->descripcion_notificacion  = $descripcion;
         $reg->Save();
-         //var_dump($reg);
-        //return $reg->id_estudiante;
+        
     }
 
-public function buscarGrado($idestudiante){
+public function buscar_fechas(){
         $db = App::$base;
-        $sql = "SELECT 
-                  `estudiantexgrado`.`id_grado`,
-                  `estudiantexgrado`.`id_estudiante`,
-                  `estudiantexgrado`.`desde`,
-                  `estudiantexgrado`.`hasta`,
-                  `estudiantexgrado`.`estado_grado`
-                FROM
-                  `estudiantexgrado`
-                  INNER JOIN `grado` ON (`estudiantexgrado`.`id_grado` = `grado`.`id_grado`)
-                  INNER JOIN `estudiante` ON (`estudiantexgrado`.`id_estudiante` = `estudiante`.`id_estudiante`)
-                WHERE
-                  `estudiantexgrado`.`id_estudiante` = ? AND 
-                  `estudiantexgrado`.`estado_grado` = 1
-                LIMIT 1";
-                $rs = $db->dosql($sql, array($idestudiante));
+        $sql = "SELECT DATEDIFF(NOW(),fecha) as dias, 
+                       id_solicitud, estado_solicitud 
+                FROM solicitud
+                WHERE estado_solicitud = 'Inactiva'";
+                $rs = $db->dosql($sql, array());
+                while (!$rs->EOF) 
+                   {
+                    if($rs->fields['dias'] >= 10) {
+                      $this->reg_notificacion($rs->fields['id_solicitud'], 'Alerta la solicitud no ha sido resuelta');
+                      $this->enviarCorreo();
+                    }                                  
+  
+                 $rs->MoveNext();     
+                   }  
 
-                return $rs->fields['id_grado'];
 }
 
 
@@ -147,16 +136,18 @@ public function listarDocentesCorreo($id)
 
   }
 
-public function enviarCorreo($id, $asunto, $cuerpo, $padre, $alumno){
-$correo = $this->buscarCorreoDocente($id);
+public function enviarCorreo(){
+//$correo = $this->buscarCorreoDocente($id);
 //var_dump($correo);
 //$curso = $this->buscar($id,1);
 //$estudiante = $this->buscar($id,2);
 //var_dump($curso);
-$inicio = nl2br("Padre de familia del $alumno\nFavor responder este correo a $padre\n\n$cuerpo");
+$asunto = 'Alerta PQR';
+$cuerpo = 'No ha solucionado la Solicitud, favor revisar';
+$inicio = nl2br("Administrador \nFavor responder este correo a \n\n$cuerpo");
 $mensaje = str_replace("<br />", "", $inicio);
-//$correo = "juanandres1210@gmail.com";
-if($correo == "" || $correo =="NULL" || $padre == "" || $padre == "NULL" ){
+$correo = "juanandres12102018@gmail.com";
+if($correo == "" || $correo =="NULL" ){
 return -1;}
 else{
 $mail = new PHPMailer;
@@ -169,10 +160,10 @@ $mail ->SMTPSecure  =  'ssl' ;                         // telling the class to u
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Host       = "smtp.gmail.com"; // set the SMTP server
 $mail->Port       = 465;                     // set the SMTP port
-$mail->Username   = "boanergespadres@gmail.com"; // SMTP account username
-$mail->Password   = "boanerges.2017";        // SMTP account password
+$mail->Username   = "juanandres1210@gmail.com"; // SMTP account username
+$mail->Password   = "juancamila890";        // SMTP account password
 //$mail->setFrom($correo, 'Padre de Familia');
-$mail->setFrom($correo, "Pregunta Padre de Familia");
+$mail->setFrom($correo, "Alerta PQR no Resuelta");
 $mail->addAddress($correo, 'Recibe');
 $mail->Subject  = $asunto;
 //$mail->Body     = "$cuerpo <br>".$padre;

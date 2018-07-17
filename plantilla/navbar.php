@@ -52,7 +52,7 @@
    
         <li class="<?php echo $active_new;?>"><a href="../solicitud/solicitud.php"></i> Realizar Peticion</a></li> 
         <li class="<?php echo $active_solicitud;?>"><a href="../historial/ver_historial.php"></i> Historial Solicitudes</a></li>   
-
+        <li class="<?php echo $active_subir;?>"><a href="../subirpdf"></i> Subir Archivos</a></li>   
         <?php
         }
         ?>

@@ -26,8 +26,7 @@
         ?>
         
         <li class="<?php echo $active_new;?>"><a href="../solicitud_admin/admin_solicitud.php"> Revisar Solicitudes <span class="sr-only">(current)</span></a></li>
-       <!-- <li class="<?php //echo $active_solicitud;?>"><a href="../solicitud/solicitud.php"></i> Realizar Peticion</a></li>-->
-         <li class=""><a href="#"></i> menu5</a></li>
+        <li class="<?php echo $active_revisar;?>"><a href="../revisarpdf"></i> Revisar Archivos</a></li>   
         <li class="<?php echo $active_productos;?>"><a href="#"></i> menu3</a></li>
     		<li class="<?php echo $active_clientes;?>"><a href="#"> menu4</a></li>
     		<li class="<?php echo $active_usuarios;?>"><a href="../usuarios/usuarios.php">Usuarios</a></li>

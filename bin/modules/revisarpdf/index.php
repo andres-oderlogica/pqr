@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] !=
         header("location: ../../../login.php");
     exit;
         }
-        if($_SESSION['perfil'] != 'Empleado')
+        if($_SESSION['perfil'] != 'Administrador')
         {
           header("location: ../../../login.php");
         }
@@ -113,8 +113,8 @@ if (!isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] !=
                 <th>#</th>
                 <th>Titulo</th>
                 <th>Descripcion</th>
-                <th>Tamaño</th>
-                <th>Tipo</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Nombre Archivo</th>
                 <th>Ver Doc</th>
             </tr>
@@ -123,17 +123,29 @@ if (!isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] !=
         include 'config.inc.php';
         $db=new Conect_MySql();
         $ses = $_SESSION['user_id'];
-            $sql = "select*from tbl_documentos where id_usuario = $ses";
+                        $sql = "SELECT 
+              `solicitud`.`id_solicitud`,
+              `solicitud`.`user_id`,
+              `tbl_documentos`.`id_documento`,
+              `tbl_documentos`.`titulo`,
+              `tbl_documentos`.`descripcion`,
+              `tbl_documentos`.`nombre_archivo`,
+              `users`.`firstname`,
+              `users`.`lastname`
+            FROM
+              `solicitud`
+              INNER JOIN `tbl_documentos` ON (`solicitud`.`id_solicitud` = `tbl_documentos`.`id_solicitud`)
+              INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)";
             $query = $db->execute($sql);
             while($datos=$db->fetch_row($query)){?>
             <tr>
-                <td><?php echo $datos['id_documento']; ?></td>
+                <td>PQR #-<?php echo $datos['id_solicitud']; ?></td>
                 <td><?php echo $datos['titulo']; ?></td>
                 <td><?php echo $datos['descripcion']; ?></td>
-                <td><?php echo $datos['tamanio']; ?></td>
-                <td><?php echo $datos['tipo']; ?></td>
+                <td><?php echo $datos['firstname']; ?></td>
+                <td><?php echo $datos['lastname']; ?></td>
                 <td><?php echo $datos['nombre_archivo']; ?></td>
-                <td><a href="archivo.php?id=<?php echo $datos['id_documento']?>" target="_blank"><img src="../../../img/pdf.jpg" width="40" height="40" /></a></td>
+                <td><a href="../subirpdf/archivo.php?id=<?php echo $datos['id_documento']?>" target="_blank"><img src="../../../img/pdf.jpg" width="40" height="40" /></a></td>
             </tr>
                 
           <?php  } ?>

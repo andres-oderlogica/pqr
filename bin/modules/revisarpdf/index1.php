@@ -11,7 +11,7 @@ session_start();
         header("location: ../../../login.php");
     exit;
         }
-        if($_SESSION['perfil'] != 'Empleado')
+        if($_SESSION['perfil'] != 'Administrador')
         {
           header("location: ../../../login.php");
         }

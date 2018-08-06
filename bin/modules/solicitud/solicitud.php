@@ -89,9 +89,33 @@ session_start();
                             <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
                             <div class="col-md-12">
                               <label for="descripcion_solicitud">Nos gustaria conocer el motivo de su queja o reclamo:</label>
-                              <textarea class="form-control" rows="10" id="descripcion_solicitud" name="descripcion_solicitud" required="true"></textarea><br>
+                              <textarea class="form-control" rows="5" id="descripcion_solicitud" name="descripcion_solicitud" required="true"></textarea><br>
                                 </div>                                                              
-                                  <input id="fecha" name="fecha" type="hidden" value="<?php echo date('Y-m-d');?>" >      
+                                  <input id="fecha" name="fecha" type="hidden" value="<?php echo date('Y-m-d');?>" > 
+
+                                  <div class="col-md-12">
+                                    <label for="tipo">Desea Subir Documentos?:</label>
+                                     <select id="doc" name="doc" class="form-control">
+                                      <option value="-1" selected>---Seleccione una Opción---</option>
+                                      <option value="1">Subir PDF</option>                                      
+                                     </select><br>  
+                                     <input id="sub" name="sub" type="hidden" value="-1" >                       
+                                  </div>   
+                              <div id="mostrar">
+                                    <div class="col-md-12">
+                                       <label for="titulo">Titulo:</label>
+                                       <input type="text" name="titulo" class="form-control">                    
+                                   </div>  
+                                     <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                                       <div class="col-md-12">
+                                          <label for="descripcion">Descripcion:</label>
+                                          <textarea class="form-control" rows="1" id="descripcion1" name="descripcion1" ></textarea><br>
+                                     </div>                                                              
+                                      
+                                  <div class="col-md-12">
+                                      <input type="file" class="form-control-file" name="archivo"><br>                                     
+                                  </div>    
+                              </div>          
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Enviar Datos</button>
                             </div>

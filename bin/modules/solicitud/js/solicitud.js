@@ -72,6 +72,10 @@ $('#form_solicitud').submit(function (e)
             },
             complete: function () {
                 verCargas();
+                $("#mostrar").hide();
+                $('#sub').val(-1);
+                $('#titulo').val("");
+                $('#descripcion').val("");
             }
         });
     });
@@ -101,6 +105,23 @@ function editar(id, solicitud)
 
 verCargas();
 
+$(document).ready(function() {
+$("#mostrar").hide();
+$('select#doc').on('change', function(){
+   var valor = $(this).val();
+   $('#sub').val(valor);
+   if(valor == 1)
+   {
+    $("#mostrar").show();
+   }
+   else
+   {
+    $("#mostrar").hide();
+   }
+              
+   });
 
+
+})
 
 

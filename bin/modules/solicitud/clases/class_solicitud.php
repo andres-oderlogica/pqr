@@ -4,6 +4,7 @@ include '../../../../core.php';
 include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php'; 
  class Solicitud extends ADOdb_Active_Record{}
  class Seguimiento extends ADOdb_Active_Record{}
+ class Documento extends ADOdb_Active_Record{}
 class regSolicitud
 {
   public $id;
@@ -34,6 +35,21 @@ public function reg_solicitud($id,$tipo,$descripcion, $fecha)
         $reg->hora = $hora;
         $reg->id_estado = 1;
         $reg->descripcion_estado = 'La solicitud fue recibida con exito, pronto recibira respuesta.';
+        $reg->Save();
+        
+    }
+
+     public function reg_documento($titulo, $descripcion, $tamanio,$tipo, $nombre, $user_id)
+    {
+      
+        $reg              = new Documento('tbl_documentos');
+        $reg->titulo      = $titulo;
+        $reg->descripcion = $descripcion;
+        $reg->tamanio = $tamanio;
+        $reg->tipo = $tipo;
+        $reg->nombre_archivo = $nombre;
+        $reg->id_usuario = $user_id;
+        $reg->id_solicitud = $this->id;
         $reg->Save();
         
     }

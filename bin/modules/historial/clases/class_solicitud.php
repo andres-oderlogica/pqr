@@ -56,7 +56,7 @@ public function listSolicitud($id)
               INNER JOIN `estado` ON (`estado`.`id_estado` = `seguimiento_solicitud`.`id_estado`)
               WHERE             
               `seguimiento_solicitud`.`id_solicitud` = ?
-              order by `seguimiento_solicitud`.`id_seguimiento` desc
+              order by fecha asc
                ";
 
 		$rs = $con->dosql($sql, array($id));
@@ -155,7 +155,7 @@ public function listSolicitud2()
             INNER JOIN `solicitud` ON (`tipo_solicitud`.`id_tiposolicitud` = `solicitud`.`id_tiposolicitud`)
             INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
             where `users`.`user_id` = ?
-            order by  `solicitud`.`id_solicitud` desc ";
+            order by  fecha asc ";
 
     $rs = $con->dosql($sql, array($_SESSION['user_id']));
         $tabla = '<table id="myTable1" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="2" class="display" >

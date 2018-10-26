@@ -6,6 +6,7 @@ include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php';
 class listCorreo
 {
 
+
 public function reg_notificacion($id, $descripcion)  
      
     {
@@ -23,17 +24,23 @@ public function reg_notificacion($id, $descripcion)
 
 public function buscar_fechas(){
         $db = App::$base;
-        $sql = "SELECT DATEDIFF(NOW(),fecha) as dias, 
-                       id_solicitud, estado_solicitud 
-                FROM solicitud
-                WHERE estado_solicitud = 'Inactiva'";
-                $rs = $db->dosql($sql, array());
+
+        $sql = "SELECT DATEDIFF(NOW(),fecha) as dias,
+                        id_estado, 
+                        id_solicitud, 
+                        para_notificacion 
+                FROM seguimiento_solicitud 
+                WHERE para_notificacion = -1";
+                $rs = $db->dosql($sql, array());                 
+                
                 while (!$rs->EOF) 
-                   {
-                    if($rs->fields['dias'] >= 10) {
-                      $this->reg_notificacion($rs->fields['id_solicitud'], 'Alerta la solicitud no ha sido resuelta');
-                      $this->enviarCorreo();
-                    }                                  
+                   {                      
+                                            
+                          if($rs->fields['dias'] >= 1) {
+                            $this->reg_notificacion($rs->fields['id_solicitud'], 'Alerta la solicitud no ha sido resuelta');
+                            $this->enviarCorreo($rs->fields['id_solicitud']);
+                            }
+                                                  
   
                  $rs->MoveNext();     
                    }  
@@ -136,17 +143,18 @@ public function listarDocentesCorreo($id)
 
   }
 
-public function enviarCorreo(){
+public function enviarCorreo($cor){
 //$correo = $this->buscarCorreoDocente($id);
 //var_dump($correo);
 //$curso = $this->buscar($id,1);
 //$estudiante = $this->buscar($id,2);
-//var_dump($curso);
-$asunto = 'Alerta PQR';
-$cuerpo = 'No ha solucionado la Solicitud, favor revisar';
+var_dump($cor);
+$asunto = "Alerta PQR#  $cor";
+$cuerpo = "No ha solucionado la Solicitud PQR #- $cor , favor revisar, esta es una prueba de recibir correo en el sistema de PQR, German me comentas si lo recibis";
 $inicio = nl2br("Administrador \nFavor responder este correo a \n\n$cuerpo");
 $mensaje = str_replace("<br />", "", $inicio);
 $correo = "juanandres12102018@gmail.com";
+//$correo = "germanjativa@gmail.com";
 if($correo == "" || $correo =="NULL" ){
 return -1;}
 else{
@@ -160,8 +168,8 @@ $mail ->SMTPSecure  =  'ssl' ;                         // telling the class to u
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Host       = "smtp.gmail.com"; // set the SMTP server
 $mail->Port       = 465;                     // set the SMTP port
-$mail->Username   = "juanandres1210@gmail.com"; // SMTP account username
-$mail->Password   = "juancamila890";        // SMTP account password
+$mail->Username   = "pqr.odontocauca@gmail.com"; // SMTP account username
+$mail->Password   = "odontocauca.2018";        // SMTP account password
 //$mail->setFrom($correo, 'Padre de Familia');
 $mail->setFrom($correo, "Alerta PQR no Resuelta");
 $mail->addAddress($correo, 'Recibe');

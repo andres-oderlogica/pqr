@@ -19,6 +19,9 @@ session_start();
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <?php include("../../../plantilla/head.php");?>
+     <script src="../../../lib/js/jquery.js?v=<?php echo str_replace('.', '', microtime(true)); ?>"></script>
+    <script src="../../../lib/jquery-ui.min.js?v=<?php echo str_replace('.', '', microtime(true)); ?>"></script>  
+     <script src="../../../lib/jquery/jquery-2.2.3.min.js"></script> 
     
   </head>
   <body>

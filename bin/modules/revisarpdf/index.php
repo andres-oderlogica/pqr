@@ -159,5 +159,8 @@ if (!isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] !=
               
           
 </div>
+<?php
+  include '../../../plantilla/footer1.php';
+  ?>
     </body>
 </html>

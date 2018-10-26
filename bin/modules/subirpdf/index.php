@@ -163,7 +163,9 @@ if (isset($_POST['subir'])) {
 </div>
 
 
-
+<?php
+  include '../../../plantilla/footer1.php';
+  ?>
 
 
     </body>

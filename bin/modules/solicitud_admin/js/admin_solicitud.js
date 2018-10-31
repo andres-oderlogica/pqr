@@ -61,6 +61,7 @@ function verCargas2()
             $('#myTable1').DataTable({
                 sPaginationType: "bootstrap", 
                 //aLengthMenu: [6],
+                order: [[ 0, "desc" ]],
                 language: {sProcessing: "Procesando...",
                     sLengthMenu: "Mostrar _MENU_ registros",
                     sZeroRecords: "No se encontraron resultados",

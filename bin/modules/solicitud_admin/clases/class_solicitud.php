@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../../../../core.php';
+include_once 'enviar_correos.php';
 include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php'; 
 class Seguimiento extends ADOdb_Active_Record{}
 
@@ -21,6 +22,25 @@ class regSolicitud
         $reg->id_estado = $estado;
         $reg->descripcion_estado = $descripcion;
         $reg->Save();
+
+        $disc       = new listCorreo();
+        $estado_correo = "";
+        if( $estado== 2)
+        {
+          $estado_correo = "EN TRAMITE";
+        }
+        if( $estado== 3)
+        {
+          $estado_correo = "RESUELTA";
+        }
+        if( $estado== 4)
+        {
+          $estado_correo = "TERMINADA";
+        }
+
+        if ($estado != 1) {
+          $disc->enviarCorreo($solicitud, $estado_correo);
+        }
         
     }
 
@@ -153,7 +173,8 @@ public function listSolicitud2()
             `tipo_solicitud`
             INNER JOIN `solicitud` ON (`tipo_solicitud`.`id_tiposolicitud` = `solicitud`.`id_tiposolicitud`)
             INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
-            order by  `solicitud`.`id_solicitud` desc ";
+            WHERE estado_solicitud <> 'Inactiva'
+            ";
 
     $rs = $con->dosql($sql, array());
         $tabla = '<table id="myTable1" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="2" class="display" >

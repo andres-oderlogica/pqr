@@ -36,7 +36,7 @@ public function reg_solicitud($id,$tipo,$descripcion, $fecha)
         $reg->id_estado = 1;
         $reg->descripcion_estado = 'La solicitud fue recibida con exito, pronto recibira respuesta.';
         $reg->Save();
-        
+
     }
 
      public function reg_documento($titulo, $descripcion, $tamanio,$tipo, $nombre, $user_id)
@@ -51,6 +51,8 @@ public function reg_solicitud($id,$tipo,$descripcion, $fecha)
         $reg->id_usuario = $user_id;
         $reg->id_solicitud = $this->id;
         $reg->Save();
+
+
         
     }
 
@@ -66,7 +68,12 @@ public function reg_solicitud($id,$tipo,$descripcion, $fecha)
         $reg->hora = $hora;
         $reg->id_estado = $estado;
         $reg->descripcion_estado = $descripcion;
+        //$reg->Save();
+
+       
+
         $reg->Save();
+        
         
     }
 

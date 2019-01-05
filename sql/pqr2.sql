@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-01-2019 a las 17:48:24
+-- Tiempo de generación: 05-01-2019 a las 19:03:37
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -126,10 +126,10 @@ CREATE TABLE `notificacion` (
 --
 
 INSERT INTO `notificacion` (`id_notificacion`, `id_solicitud`, `fecha_notificacion`, `descripcion_notificacion`, `estado`) VALUES
-(8, 1, '2019-01-04', 'Alerta la solicitud no ha sido resuelta', '0'),
-(9, 2, '2019-01-04', 'Alerta la solicitud no ha sido resuelta', '0'),
-(23, 4, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '0'),
-(24, 5, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '0');
+(1, 6, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '1'),
+(2, 7, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '1'),
+(3, 8, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '1'),
+(4, 9, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '1');
 
 -- --------------------------------------------------------
 
@@ -315,14 +315,10 @@ CREATE TABLE `seguimiento_solicitud` (
 --
 
 INSERT INTO `seguimiento_solicitud` (`id_seguimiento`, `id_solicitud`, `fecha`, `hora`, `id_estado`, `descripcion_estado`, `para_notificacion`) VALUES
-(1, 1, '2018-12-29', '06:36:34', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(2, 2, '2018-12-29', '06:37:04', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(4, 4, '2018-12-29', '06:57 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(9, 5, '2019-01-04', '08:22 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(11, 4, '2019-01-04', '08:34 PM', 2, 'prueba', -1),
-(13, 2, '2019-01-04', '08:39 PM', 2, 'seguimois', -1),
-(14, 1, '2019-01-04', '08:57 PM', 3, 'esta ya', -1),
-(15, 5, '2019-01-05', '11:45 AM', 3, 'ya sew va solucionst', -1);
+(1, 6, '2019-01-05', '12:24 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
+(2, 7, '2019-01-05', '01:01 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
+(3, 8, '2019-01-05', '01:01 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
+(4, 9, '2019-01-05', '01:02 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1);
 
 --
 -- Disparadores `seguimiento_solicitud`
@@ -371,10 +367,10 @@ CREATE TABLE `solicitud` (
 --
 
 INSERT INTO `solicitud` (`id_solicitud`, `user_id`, `id_tiposolicitud`, `sufijo_solicitud`, `descripcion_solicitud`, `fecha`, `estado_solicitud`) VALUES
-(1, 83, 1, NULL, 'prueba', '2018-12-30', 'Espera'),
-(2, 83, 2, NULL, 'esta es una queja', '2018-12-30', 'Espera'),
-(4, 83, 3, NULL, 'este es un reclamo', '2018-12-30', 'Activa'),
-(5, 83, 1, NULL, 'es para mnotificaion', '2019-01-05', 'Espera');
+(6, 83, 1, NULL, 'esta es una peticion', '2019-01-05', 'Activa'),
+(7, 83, 2, NULL, 'esta es una queja', '2019-01-05', 'Activa'),
+(8, 83, 3, NULL, 'esto es un reclamo', '2019-01-05', 'Activa'),
+(9, 83, 4, NULL, 'esto es una vivencia', '2019-01-05', 'Activa');
 
 -- --------------------------------------------------------
 
@@ -592,7 +588,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `notificacion`
 --
 ALTER TABLE `notificacion`
-  MODIFY `id_notificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_notificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `opcion`
@@ -628,13 +624,13 @@ ALTER TABLE `respuestalibre`
 -- AUTO_INCREMENT de la tabla `seguimiento_solicitud`
 --
 ALTER TABLE `seguimiento_solicitud`
-  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_documentos`

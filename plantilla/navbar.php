@@ -89,14 +89,13 @@
 
         
        <ul class="nav navbar-nav">
-          <li class="nav-item <?php echo $active_notificaciones;?>"><a href="../correos/ver_notificacion.php">Notificaciones</a></li>
-            <?php 
+          <li class="nav-item <?php echo $active_notificaciones;?>"><a href="../correos/ver_notificacion.php">Notificaciones<?php 
             $var = $_SESSION['num'];
             if($var > 0){
               ?>
             <span class="label label-warning">
-            <?php echo $var; }?></span>
-        </a>
+            <?php echo $var; }?></span></a></li>
+            
       </ul>
   
          

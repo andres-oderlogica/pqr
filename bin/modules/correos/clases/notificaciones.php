@@ -38,7 +38,7 @@ public function buscar_fechas(){
                 while (!$rs->EOF) 
                    {                      
                                             
-                          if($rs->fields['dias'] >= 1) {
+                          if($rs->fields['dias'] >= 0) {
                             $this->reg_notificacion($rs->fields['id_solicitud'], 'Alerta la solicitud no ha sido resuelta');
                            // $this->enviarCorreo($rs->fields['id_solicitud']);
                             }

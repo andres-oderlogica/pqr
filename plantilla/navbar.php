@@ -1,5 +1,12 @@
 	<?php
   session_start();
+  include '../../../core.php';
+        $db = App::$base;
+         $sql = "SELECT count(id_notificacion) as num from notificacion where estado = 1";
+         $rs = $db->dosql($sql, array());
+         $res = $rs->fields['num'];
+         $_SESSION['num'] = $res;
+      
 		if (isset($title))
 		{
 	?>
@@ -77,10 +84,39 @@
               <li><a href="../encuesta/filtros_reporte.php"></i> Reporte Encuestas</a></li>
               <li><a href="../graficas/reporte_grafico.php"></i> Reporte Grafico</a></li>
               <li><a href="../graficas/reporte_grafico_solicitudes.php"></i> Reporte Grafico Solicitudes</a></li>-->
-        <li class="nav-item <?php echo $active_usuarios;?>"><a href="../Notificaciones/notificaciones.php">Notificaciones</a></li>       
-    		<li class="nav-item <?php echo $active_usuarios;?>"><a href="../usuarios/usuarios.php">Usuarios</a></li>
+          <!-- <li class="nav-item <?php //echo $active_usuarios;?>"><a href="../Notificaciones/notificaciones.php">Notificaciones</a></li>       -->
+    <li class="nav-item <?php echo $active_usuarios;?>"><a href="../usuarios/usuarios.php">Usuarios</a></li>
 
         
+       <ul class="nav navbar-nav">
+          <li class="nav-item <?php echo $active_notificaciones;?>"><a href="../correos/ver_notificacion.php">Notificaciones</a></li>
+            <?php 
+            $var = $_SESSION['num'];
+            if($var > 0){
+              ?>
+            <span class="label label-warning">
+            <?php echo $var; }?></span>
+        </a>
+      </ul>
+  
+         
+       
+       
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <?php

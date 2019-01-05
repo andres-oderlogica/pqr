@@ -4,6 +4,8 @@ include '../../../../core.php';
 include_once 'enviar_correos.php';
 include_once Config::$home_bin.Config::$ds.'db'.Config::$ds.'active_table.php'; 
 class Seguimiento extends ADOdb_Active_Record{}
+class NotificacionAdmin extends ADOdb_Active_Record{}
+
 
 class regSolicitud
 {
@@ -43,8 +45,41 @@ class regSolicitud
         if ($estado != 1) {
           $disc->enviarCorreo($solicitud, $estado_correo);
         }
+
+        if($this->buscarNotificacion($solicitud) != -1)
+        {
+           $this->editNotificacion($this->buscarNotificacion($solicitud));
+        }
+
         
     }
+
+    public function editNotificacion($id)
+    {
+      
+        $reg              = new NotificacionAdmin('notificacion');
+        $reg->load("id_notificacion = {$id}");
+        $reg->estado      = 0;     
+        $reg->Save();
+        
+    }
+
+    public function buscarNotificacion($id)
+  {
+    $db = App::$base;
+        $sql = "SELECT 
+                  id_solicitud, id_notificacion
+                FROM
+                  notificacion                  
+                  WHERE id_solicitud = ?
+                  AND id_solicitud != 0";
+                    $rs = $db->dosql($sql, array($id));
+                    if($rs->fields["id_solicitud"] == "NULL" || $rs->fields["id_solicitud"] == "")
+                  return -1;
+                else
+                  return $rs->fields["id_notificacion"];
+
+  }
 
 
 public function listSolicitud($id)

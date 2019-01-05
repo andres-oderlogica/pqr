@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-01-2019 a las 17:48:24
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.2.11
+-- Tiempo de generación: 04-01-2019 a las 22:53:48
+-- Versión del servidor: 10.1.30-MariaDB
+-- Versión de PHP: 7.2.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -117,19 +117,8 @@ CREATE TABLE `notificacion` (
   `id_notificacion` int(11) NOT NULL,
   `id_solicitud` int(11) DEFAULT NULL,
   `fecha_notificacion` date DEFAULT NULL,
-  `descripcion_notificacion` varchar(100) DEFAULT NULL,
-  `estado` char(1) DEFAULT NULL
+  `descripcion_notificacion` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `notificacion`
---
-
-INSERT INTO `notificacion` (`id_notificacion`, `id_solicitud`, `fecha_notificacion`, `descripcion_notificacion`, `estado`) VALUES
-(8, 1, '2019-01-04', 'Alerta la solicitud no ha sido resuelta', '0'),
-(9, 2, '2019-01-04', 'Alerta la solicitud no ha sido resuelta', '0'),
-(23, 4, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '0'),
-(24, 5, '2019-01-05', 'Alerta la solicitud no ha sido resuelta', '0');
 
 -- --------------------------------------------------------
 
@@ -318,11 +307,7 @@ INSERT INTO `seguimiento_solicitud` (`id_seguimiento`, `id_solicitud`, `fecha`, 
 (1, 1, '2018-12-29', '06:36:34', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
 (2, 2, '2018-12-29', '06:37:04', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
 (4, 4, '2018-12-29', '06:57 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(9, 5, '2019-01-04', '08:22 PM', 1, 'La solicitud fue recibida con exito, pronto recibira respuesta.', -1),
-(11, 4, '2019-01-04', '08:34 PM', 2, 'prueba', -1),
-(13, 2, '2019-01-04', '08:39 PM', 2, 'seguimois', -1),
-(14, 1, '2019-01-04', '08:57 PM', 3, 'esta ya', -1),
-(15, 5, '2019-01-05', '11:45 AM', 3, 'ya sew va solucionst', -1);
+(5, 4, '2018-12-29', '06:59 PM', 2, 'se respondio', -1);
 
 --
 -- Disparadores `seguimiento_solicitud`
@@ -371,10 +356,9 @@ CREATE TABLE `solicitud` (
 --
 
 INSERT INTO `solicitud` (`id_solicitud`, `user_id`, `id_tiposolicitud`, `sufijo_solicitud`, `descripcion_solicitud`, `fecha`, `estado_solicitud`) VALUES
-(1, 83, 1, NULL, 'prueba', '2018-12-30', 'Espera'),
-(2, 83, 2, NULL, 'esta es una queja', '2018-12-30', 'Espera'),
-(4, 83, 3, NULL, 'este es un reclamo', '2018-12-30', 'Activa'),
-(5, 83, 1, NULL, 'es para mnotificaion', '2019-01-05', 'Espera');
+(1, 83, 1, NULL, 'prueba', '2018-12-30', 'Activa'),
+(2, 83, 2, NULL, 'esta es una queja', '2018-12-30', 'Activa'),
+(4, 83, 3, NULL, 'este es un reclamo', '2018-12-30', 'Activa');
 
 -- --------------------------------------------------------
 
@@ -592,7 +576,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `notificacion`
 --
 ALTER TABLE `notificacion`
-  MODIFY `id_notificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_notificacion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `opcion`
@@ -628,13 +612,13 @@ ALTER TABLE `respuestalibre`
 -- AUTO_INCREMENT de la tabla `seguimiento_solicitud`
 --
 ALTER TABLE `seguimiento_solicitud`
-  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_documentos`

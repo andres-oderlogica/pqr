@@ -18,6 +18,7 @@ public function reg_notificacion($id, $descripcion)
         $reg->id_solicitud              =$id;       
         $reg->fecha_notificacion        = $fecha;
         $reg->descripcion_notificacion  = $descripcion;
+        $reg->estado  = 1;
         $reg->Save();
         
     }
@@ -28,9 +29,10 @@ public function buscar_fechas(){
         $sql = "SELECT DATEDIFF(NOW(),fecha) as dias,
                         id_estado, 
                         id_solicitud, 
-                        para_notificacion 
+                        para_notificacion,
+                        id_seguimiento
                 FROM seguimiento_solicitud 
-                WHERE para_notificacion = -1";
+                WHERE id_estado = 1 and id_solicitud not in (SELECT id_solicitud FROM notificacion)";
                 $rs = $db->dosql($sql, array());                 
                 
                 while (!$rs->EOF) 
@@ -48,52 +50,28 @@ public function buscar_fechas(){
 }
 
 
-public function listarDocentesCorreo($id)
+public function listarNotificacion()
 {
   //var_dump($id);
 	$con = App::$base;
     $sql = "SELECT 
-              `docente`.`nombre_completo`,
-              `docente`.`user_email` as mail,
-              CONCAT(`grado`.`descripcion`,' ',
-              `grado`.`letra`) as grado,
-              `materia`.`descripcion` as materia,
-               `grado`.`descripcion`,
-               `grado`.`letra`,
-               `materia_organizada`.`cod_docente`,
-              
-               \"
-              <button type=\'button\' class=\'btn btn-info btn-sm btn_edit\' data-title=\'Edit\' data-toggle=\'modal\' data-target=\'#myModal\' >
-               <span class=\'glyphicon glyphicon-envelope\'></span></button>
-               </div>
-                \" 
-               as editar,
-               \"
-              <button type=\'button\' class=\'btn btn-danger btn-sm btn_delete\' data-title=\'Edit\'>
-               <span class=\'glyphicon glyphicon-trash\'></span></button>
-               </div>
-                \"
-                 as borrar                    
-                      FROM
-            `docente`
-            INNER JOIN `materia_organizada` ON (`docente`.`id_docente` = `materia_organizada`.`cod_docente`)
-            INNER JOIN `materiaxgrado` ON (`materia_organizada`.`cod_mxg` = `materiaxgrado`.`id_mxg`)
-            INNER JOIN `materia` ON (`materiaxgrado`.`cod_materia` = `materia`.`id_materia`)
-            INNER JOIN `grado` ON (`materiaxgrado`.`cod_grado` = `grado`.`id_grado`)
-          WHERE
-            `grado`.`id_grado` = ? ";
+              id_notificacion,
+              CONCAT('PQR #', ' ', id_solicitud) as pqr,
+              fecha_notificacion,
+              descripcion_notificacion
+              FROM notificacion
+              WHERE estado = 1";
 
-		$rs = $con->dosql($sql, array($this->buscarGrado($id)));
+		$rs = $con->dosql($sql, array());
     //var_dump($this->buscarGrado($id));
         $tabla = '<table id="myTable" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="1" class="display" >
                         <thead>
                         <tr>
-                        <th id="yw9_c0">Nombre Docente</th>
-                        <th id="yw9_c1">Grado</th>
-                        <th id="yw9_c2">Materia</th>
-                        <th id="yw9_c2">Mail</th>
-                        <th id="yw9_c7">Redactar</th>
-                        
+                        <th id="yw9_c0">#</th>
+                        <th id="yw9_c1">Solicitud</th>
+                        <th id="yw9_c2">Fecha de Alerta</th>
+                        <th id="yw9_c2">Descripcion</th>
+                                 
                         </tr>
                         </thead>
                         <tbody>';
@@ -101,21 +79,16 @@ public function listarDocentesCorreo($id)
                    {
                    	$tabla.='<tr >  
                             <td>                            
-                                '.utf8_encode($rs->fields['nombre_completo']).'
+                                '.utf8_encode($rs->fields['id_notificacion']).'
                             </td>
                             <td>                            
-                                '.utf8_encode($rs->fields['grado']).'
+                                '.utf8_encode($rs->fields['pqr']).'
                             </td>
                             <td>                            
-                                '.utf8_encode($rs->fields['materia']).'
+                                '.utf8_encode($rs->fields['fecha_notificacion']).'
                             </td>
                             <td>                            
-                                '.utf8_encode($rs->fields['mail']).'
-                            </td>
-                                                      
-                                                    
-                            <td align="center" width= "30" onclick="editar('.$rs->fields['cod_docente'].')">                            
-                                '.utf8_encode($rs->fields['editar']).'
+                                '.utf8_encode($rs->fields['descripcion_notificacion']).'
                             </td>';                                                                               
                             
             $tabla.= '</tr>';                                     

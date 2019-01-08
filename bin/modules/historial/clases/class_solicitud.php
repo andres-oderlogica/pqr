@@ -13,11 +13,13 @@ class regSolicitud
       date_default_timezone_set('America/Bogota');
         $fecha = date('Y-m-d');
         $hora =  date ("h:i:s");
+        $currentDateTime=date('m/d/Y H:i:s');
+        $newDateTime = date('h:i A', strtotime($currentDateTime));
         $reg              = new Seguimiento('seguimiento_solicitud');
        // $reg->load("id_seguimiento = {$id}");
         $reg->id_solicitud      = $solicitud;
         $reg->fecha = $fecha;
-        $reg->hora = $hora;
+        $reg->hora = $newDateTime;
         $reg->id_estado = $estado;
         $reg->descripcion_estado = $descripcion;
         $reg->Save();
@@ -64,8 +66,8 @@ public function listSolicitud($id)
                         <thead>
                         <tr>
                         <th id="yw9_c0">#</th>
-                         <!--  <th id="yw9_c1">Nombres</th>
-                        <th id="yw9_c2">Apellidos</th>
+                         <th id="yw9_c1">No PQR</th>
+                        <!--  <th id="yw9_c2">Apellidos</th>
                      <th id="yw9_c4">Descripcion</th>-->
                         <th id="yw9_c5">Fecha</th>
                         <th id="yw9_c6">Hora</th>
@@ -90,7 +92,10 @@ public function listSolicitud($id)
                               $text_estado="Terminada";
                               $label_class='label-success';}
 
-                   	$tabla.='<tr >  
+                   	$tabla.='<tr > 
+                    <td>                            
+                                '.utf8_encode($rs->fields['id_seguimiento']).'
+                            </td> 
                             <td>                            
                                 '.utf8_encode($rs->fields['numero']).'
                             </td>

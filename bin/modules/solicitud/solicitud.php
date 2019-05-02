@@ -102,15 +102,15 @@ session_start();
                                      <input id="sub" name="sub" type="hidden" value="-1" >                       
                                   </div>   
                               <div id="mostrar">
-                                    <div class="col-md-12">
+                                 <!--   <div class="col-md-12">
                                        <label for="titulo">Titulo:</label>
                                        <input type="text" name="titulo" class="form-control">                    
-                                   </div>  
+                                   </div>  -->
                                      <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
-                                       <div class="col-md-12">
+                                    <!--   <div class="col-md-12">
                                           <label for="descripcion">Descripcion:</label>
                                           <textarea class="form-control" rows="1" id="descripcion1" name="descripcion1" ></textarea><br>
-                                     </div>                                                              
+                                     </div>   -->                                                           
                                       
                                   <div class="col-md-12">
                                       <input type="file" class="form-control-file" name="archivo"><br>                                     

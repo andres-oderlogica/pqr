@@ -117,7 +117,7 @@ if ($login->isUserLoggedIn() == true) {
 			  </div>
 			  <div class="form-group">
 				
-				  <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellidos" required>
+				<!--  <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellidos" required>-->
 			
 			  </div>
 			  <div class="form-group">

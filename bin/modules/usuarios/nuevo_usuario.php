@@ -1,4 +1,6 @@
 <?php
+include '../../../core.php';
+require_once("../../../login/Login.php");
 //include('../../../is_logged.php');
 if (version_compare(PHP_VERSION, '5.3.7', '<')) {
     exit("Sorry, Simple PHP Login does not run on a PHP version smaller than 5.3.7 !");
@@ -8,9 +10,11 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
 }		
 		if (empty($_POST['firstname'])){
 			$errors[] = "Nombres vacíos";
-		} elseif (empty($_POST['lastname'])){
+		} 
+      /*  elseif (empty($_POST['lastname'])){
 			$errors[] = "Apellidos vacíos";
-		}  elseif (empty($_POST['user_name'])) {
+		}  */
+        elseif (empty($_POST['user_name'])) {
             $errors[] = "Nombre de usuario vacío";
         } elseif (empty($_POST['user_password_new']) || empty($_POST['user_password_repeat'])) {
             $errors[] = "Contraseña vacía";
@@ -33,7 +37,7 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
         } elseif (
 			!empty($_POST['user_name'])
 			&& !empty($_POST['firstname'])
-			&& !empty($_POST['lastname'])
+			//&& !empty($_POST['lastname'])
             && strlen($_POST['user_name']) <= 64
             && strlen($_POST['user_name']) >= 2
             && preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name'])
@@ -57,7 +61,7 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
                 $per = $perfil = mysqli_real_escape_string($con,(strip_tags($_POST["perfil"],ENT_QUOTES)));
                 
 				$user_password_hash = password_hash($user_password, PASSWORD_DEFAULT);
-					
+				 
                 
                 $sql = "SELECT * FROM users WHERE user_name = '" . $user_name . "' OR user_email = '" . $user_email . "';";
                 $query_check_user_name = mysqli_query($con,$sql);
@@ -71,8 +75,21 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
                     $query_new_user_insert = mysqli_query($con,$sql);
 
                     // if user has been added successfully
-                    if ($query_new_user_insert) {
-                        $messages[] = "La cuenta ha sido creada con éxito.";
+                    if ($query_new_user_insert) { 
+                    $messages[] = "La cuenta ha sido creada con éxito.";  
+                    /*  $login = new Login();
+                      echo "<form name='login' role='form' method='POST' action='login/Login.php'> 
+                                <input type=hidden name=user_name value=$user_name> 
+                                <input type=hidden name=user_password value=$user_password> 
+                                </form>
+                                <script language='JavaScript'>
+                                document.login.submit()
+                                </script>";                         
+                       
+                      if ($login->isUserLoggedIn() == true) {    
+                           header("location: bin/modules/inicio/inicio.php");*/
+                       }
+                        
                     } else {
                         $errors[] = "Lo sentimos , el registro falló. Por favor, regrese y vuelva a intentarlo.";
                     }

@@ -39,18 +39,18 @@
                     <ul class="dropdown-menu">
                       <li><a href="../solicitud_admin/admin_solicitud.php">Revisar Solicitudes</a></li>
                       <li class="divider"></li>
-                      <li><a href="../revisarpdf">Revisar Archivos</a></li>
+                     <!-- <li><a href="../revisarpdf">Revisar Archivos</a></li>-->
                     </ul>
 
-              <li class="dropdown">
+              <!--<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   Encuestas <b class="caret"></b>
                 </a>
                     <ul class="dropdown-menu">
-                      <li><a href="../encuesta/gestion_encuesta_pregunta.php">Gestionar Encuesta y Preguntas</a></li>                      
+                      <li><a href ="../encuesta/gestion_encuesta_pregunta.php">Gestionar Encuesta y Preguntas</a></li>                      
                       <li><a href="../encuesta/gestion_opciones.php">Gestionar Opciones</a></li>
-                     <!-- <li class="divider"></li>-->
-                    </ul>
+                      <li class="divider"></li>
+                    </ul>-->
 
                <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -97,28 +97,7 @@
             <?php echo $var; }?></span></a></li>
             
       </ul>
-  
-         
-       
-       
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <?php
+      <?php
         }
         if($_SESSION['perfil'] == 'Gerente')
         {
@@ -133,7 +112,7 @@
    
         <li class="<?php echo $active_new;?>"><a href="../solicitud/solicitud.php"></i> Realizar PQR</a></li> 
         <li class="<?php echo $active_solicitud;?>"><a href="../historial/ver_historial.php"></i> Seguimiento PQR</a></li>   
-        <li class="<?php echo $active_subir;?>"><a href="../subirpdf/lista.php"></i> Lista Archivos</a></li> 
+       <!-- <li class="<?php echo $active_subir;?>"><a href="../subirpdf/lista.php"></i> Lista Archivos</a></li> -->
         <li class="<?php echo $active_responder;?>"><a href="../encuesta/responder_encuesta.php"></i> Responder Encuesta</a></li>  
         <?php
         }

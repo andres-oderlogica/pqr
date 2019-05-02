@@ -187,7 +187,7 @@ public function listSolicitud($id)
 
 }
 
-public function listSolicitud2()
+public function listSolicitud2($estado)
 {
   $con = App::$base;
     $sql = "SELECT 
@@ -199,7 +199,8 @@ public function listSolicitud2()
             CONCAT(`users`.`firstname`, ' ',
             `users`.`lastname`) AS nombre_completo,
             `solicitud`.`fecha`,
-            `solicitud`.`estado_solicitud`,                    
+            `solicitud`.`estado_solicitud`, 
+            ifnull(`tbl_documentos`.`id_documento`, -1) as id_documento,                   
                \"
               <button type=\'button\' class=\'btn btn-info btn-sm btn_sol\' data-title=\'Edit\'>
                <span class=\'glyphicon glyphicon-play\'></span></button>
@@ -207,13 +208,14 @@ public function listSolicitud2()
                 \" 
                as ir               
             FROM
-            `tipo_solicitud`
-            INNER JOIN `solicitud` ON (`tipo_solicitud`.`id_tiposolicitud` = `solicitud`.`id_tiposolicitud`)
-            INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
-            WHERE estado_solicitud <> 'Inactiva'
+          `tbl_documentos`
+          RIGHT JOIN `solicitud` ON (`tbl_documentos`.`id_solicitud` = `solicitud`.`id_solicitud`)
+          INNER JOIN `tipo_solicitud` ON (`solicitud`.`id_tiposolicitud` = `tipo_solicitud`.`id_tiposolicitud`)
+          INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
+            WHERE estado_solicitud = ?
             ";
 
-    $rs = $con->dosql($sql, array());
+    $rs = $con->dosql($sql, array($estado));
         $tabla = '<table id="myTable1" class="table table-hover table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="2" class="display" >
                         <thead>
                         <tr>
@@ -222,6 +224,7 @@ public function listSolicitud2()
                         <th id="yw9_c2">Usuario</th>
                         <th id="yw9_c3">Fecha</th>
                         <th id="yw9_c4">Estado</th>
+                        <th id="yw9_c4">Archivos</th>
                         <th id="yw9_c5">Ver</th>                   
                         </tr>
                         </thead>
@@ -240,6 +243,17 @@ public function listSolicitud2()
                             $text_estado="En espera";
                             $label_class='label-info';}
 
+                            if($rs->fields['id_documento'] != -1) 
+                            {
+                              $case = '<a href="../subirpdf/archivo.php?id='.$rs->fields['id_documento'].'" target="iframe_a">
+                             <img src="../../../img/pdf.jpg" width="40" height="40" /></a>';
+
+                            }
+                            else
+                            {
+                            $case = '<span class="label label-info">Sin Archivo</span>';
+                            }
+
                     $tabla.='<tr >  
                             <td>                            
                                 '.utf8_encode($rs->fields['numero']).'
@@ -253,9 +267,10 @@ public function listSolicitud2()
                             <td>                            
                                 '.utf8_encode($rs->fields['fecha']).'
                             </td>                            
-                            <td align="center">                            
+                           <td align="center">                            
                              <span class="label '.$label_class.'">'.$text_estado.'</span>
-                             </td>  
+                             </td>
+                             <td> '.$case.'</td>
                                                     
                             <td width= "30" onclick="listar_seguimiento('.$rs->fields['id_solicitud'].')">                            
                                 '.utf8_encode($rs->fields['ir']).'

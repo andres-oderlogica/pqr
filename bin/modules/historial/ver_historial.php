@@ -75,16 +75,27 @@ session_start();
               <div class="col-md-6">
                 <div class="panel panel-primary">
                   <div class="panel-heading"><h5>Peticiones</h5></div>
-                    <div class="panel-body">
+                   <div class="panel-body">
+                    <div class='col-md-6'>
+                      <select class="form-control" id='estado'>
+                        <option value="-1">--- Selecciones un Estado---</option>
+                        <option value="Activa">Activa</option>
+                        <option value="Espera">En Espera</option>
+                        <option value="Inactiva">Inactiva</option>
+                      </select><br>
+                      <input type="hidden" id='valor_estado'>
+                    </div>
+                    <div class='col-md-12' id='tabla'>
                       <div class="table-responsive"> 
                          <div id="ver_cargas2"></div>
                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
                <div class="col-md-6">
                 <div class="panel panel-primary">
-                   <div class="panel-heading"><h5>Historial PQR</h5></div>
+                   <div class="panel-heading"><h5>Evolucion PQR</h5></div>
                     <div class="panel-body">
                         <div class="table-responsive"> 
                          <div id="ver_cargas"></div>

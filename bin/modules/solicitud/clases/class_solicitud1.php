@@ -275,31 +275,6 @@ public function eliminar($id)
 
   }
 
-  public function estados()
-  {
-    $db = App::$base;
-        $sql = "SELECT 
-                  id_estado,
-                  descripcion
-                FROM
-                  estado";
-                    $rs = $db->dosql($sql, array());
-
-    while (!$rs->EOF) 
-                   {
-
-                    $res[] = array( 
-                     "id_estado" => $rs->fields['id_estado'],
-                     "descripcion" => $rs->fields['descripcion']
-                     );                     
-
-                    $rs->MoveNext();      
-                   } 
-                   
-                   return $res;
-
-  }
-
 }
 
 ?>

@@ -48,13 +48,13 @@ function verCargas(id)
     });
 }
 
-function verCargas2()
+function verCargas2(est)
 {  
     $.ajax({
         url: 'clases/control_listar.php',
          type: "POST",
          dataType: "html",
-         data: {opcion:"2"},
+         data: {opcion:"2", estado:est},
         success: function (data)
         {
             $('#ver_cargas2').html(data);
@@ -126,9 +126,24 @@ function listar_seguimiento(id)
         
 }
 
-verCargas2()
+//verCargas2()
+
+$(document).ready(function($){
 
 
+$('#tabla').hide();
+//$('#act_add').prop('disabled', true);
+
+  $('select#estado').on('change',function(){
+     var id = $(this).val();                      
+                    
+                    //$("#valor_estado").val(id);                  
+                    $('#tabla').show();
+                    verCargas2(id)
+                        
+             });
+
+    });
 /*$(function ()
 {
 $('#form_solicitud').submit(function (e)

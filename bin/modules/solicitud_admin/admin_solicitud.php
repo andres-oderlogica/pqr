@@ -110,6 +110,7 @@ session_start();
 <?php
 //include 'modal_ver.php';
 include 'modal_solucionar.php';
+include 'modal_sin_accion.php';
 ?>
   <?php
     include '../../../plantilla/footer1.php';

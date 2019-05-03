@@ -11,7 +11,7 @@ function verCargas(id)
            
             $('#myTable').DataTable({
                 sPaginationType: "bootstrap", 
-                //aLengthMenu: [6],
+               // aLengthMenu: [3],
                 order: [[ 0, "desc" ]],
                 language: {sProcessing: "Procesando...",
                     sLengthMenu: "Mostrar _MENU_ registros",
@@ -62,7 +62,7 @@ function verCargas2(est)
             $('#myTable1').DataTable({
                 sPaginationType: "bootstrap", 
                 //aLengthMenu: [6],
-                order: [[ 1, "desc" ]],
+                order: [[ 0, "desc" ]],
                 language: {sProcessing: "Procesando...",
                     sLengthMenu: "Mostrar _MENU_ registros",
                     sZeroRecords: "No se encontraron resultados",
@@ -112,6 +112,27 @@ function editar(id, solicitud)
     $("#descripcion_sol").val(data.descripcion_solicitud);
     $("#id_sol").val(solicitud);
     $("#id").val(id); 
+    //console.log(data.estado_solicitud)
+           if(data.estado_solicitud == 'Inactivo'){
+            parent.$('#botones').hide();
+           } 
+    });         
+}
+
+function editarSin(id, solicitud)
+{   
+    
+    $.ajax({    url: "clases/control_crud.php",
+              type: "POST",
+              dataType: "json",
+              data: {opcion:"2",id:id},
+          })
+      .done(function(data) {
+      //console.log(data) 
+    $("#descripcionsin").val(data.descripcion_estado);
+    $("#descripcion_solsin").val(data.descripcion_solicitud);
+    $("#id_solsin").val(solicitud);
+    $("#idsin").val(id); 
     //console.log(data.estado_solicitud)
            if(data.estado_solicitud == 'Inactivo'){
             parent.$('#botones').hide();

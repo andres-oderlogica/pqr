@@ -49,7 +49,13 @@ public function listSolicitud($id)
                <span class=\'glyphicon glyphicon-play\'></span></button>
                </div>
                 \" 
-               as editar                
+               as editar,
+                \"
+              <button type=\'button\' class=\'btn btn-info btn-sm btn_sin\' data-title=\'Editsin\' data-toggle=\'modal\' data-target=\'#myModalsinAccion\' >
+               <span class=\'glyphicon glyphicon-play\'></span></button>
+               </div>
+                \" 
+               as editar_sin_accion                 
             FROM
               `solicitud`
               INNER JOIN `users` ON (`solicitud`.`user_id` = `users`.`user_id`)
@@ -58,7 +64,7 @@ public function listSolicitud($id)
               INNER JOIN `estado` ON (`estado`.`id_estado` = `seguimiento_solicitud`.`id_estado`)
               WHERE             
               `seguimiento_solicitud`.`id_solicitud` = ?
-              order by fecha asc
+              order by `seguimiento_solicitud`.`id_seguimiento` desc
                ";
 
 		$rs = $con->dosql($sql, array($id));
@@ -77,8 +83,20 @@ public function listSolicitud($id)
                         </tr>
                         </thead>
                         <tbody>';
+                        $indexActual= 0;
 		          while (!$rs->EOF) 
                    {
+                    $indexActual++;
+                   // $indexActual=$rs->fields['_GRID_HEADER_06_01'];
+                  // $indexActual= $rs->recordCount();
+                     //var_dump($this->solo_leer_respuesta($rs->fields['id_solicitud']));
+                    $clic = 'onclick="editarSin('.$rs->fields['id_seguimiento'].','.$rs->fields['id_solicitud'].')"';
+                    $edit = utf8_encode($rs->fields['editar_sin_accion']);
+                     if($indexActual == $this->solo_leer_respuesta($rs->fields['id_solicitud']))
+                     {
+                       $clic = 'onclick="editar('.$rs->fields['id_seguimiento'].','.$rs->fields['id_solicitud'].')"';
+                       $edit = utf8_encode($rs->fields['editar']);
+                     }
                     if ($rs->fields['estado_descripcion']=='ENVIADA'){
                           $text_estado="Enviada";
                           $label_class='label-primary';}
@@ -118,8 +136,8 @@ public function listSolicitud($id)
                              <span class="label '.$label_class.'">'.$text_estado.'</span>
                              </td>  
                                                     
-                            <td width= "30" onclick="editar('.$rs->fields['id_seguimiento'].','.$rs->fields['id_solicitud'].')">                            
-                                '.utf8_encode($rs->fields['editar']).'
+                            <td width= "30" '.$clic.'>                            
+                                '.$edit.'
                             </td>
                             
 
@@ -133,6 +151,16 @@ public function listSolicitud($id)
         $tabla.="</tbody></table>";
         return $tabla;
 
+}
+
+public function solo_leer_respuesta($solicitud)
+{
+  $db = App::$base;
+        $sql = "SELECT count(id_seguimiento) as todos,max(id_seguimiento) as num 
+                from seguimiento_solicitud 
+                where id_solicitud = ?";
+    $rs = $db->dosql($sql, array($solicitud));
+       return $rs->fields['todos'] ;
 }
 
 public function listSolicitud2($estado)

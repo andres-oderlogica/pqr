@@ -118,6 +118,27 @@ function editar(id, solicitud)
     });         
 }
 
+function editarSin(id, solicitud)
+{   
+    
+    $.ajax({    url: "clases/control_crud.php",
+              type: "POST",
+              dataType: "json",
+              data: {opcion:"2",id:id},
+          })
+      .done(function(data) {
+      //console.log(data) 
+    $("#descripcionsin").val(data.descripcion_estado);
+    $("#descripcion_solsin").val(data.descripcion_solicitud);
+    $("#id_solsin").val(solicitud);
+    $("#idsin").val(id); 
+    //console.log(data.estado_solicitud)
+           if(data.estado_solicitud == 'Inactivo'){
+            parent.$('#botones').hide();
+           } 
+    });         
+}
+
 
 function listar_seguimiento(id)
 {   

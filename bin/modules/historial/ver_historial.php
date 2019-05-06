@@ -72,7 +72,7 @@ session_start();
   include("../../../plantilla/navbar.php"); //var_dump($_SESSION['user_id']) ;
   ?>  
 <div class="container-fluid">
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <div class="panel panel-primary">
                   <div class="panel-heading"><h5>Peticiones</h5></div>
                    <div class="panel-body">
@@ -93,7 +93,7 @@ session_start();
                     </div>
                 </div>
             </div>
-               <div class="col-md-6">
+               <div class="col-md-5">
                 <div class="panel panel-primary">
                    <div class="panel-heading"><h5>Evolucion PQR</h5></div>
                     <div class="panel-body">

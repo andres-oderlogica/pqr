@@ -12,6 +12,7 @@ function verCargas(id)
             $('#myTable').DataTable({
                 sPaginationType: "bootstrap", 
                 //aLengthMenu: [6],
+                order: [[ 0, "desc" ]],
                 language: {sProcessing: "Procesando...",
                     sLengthMenu: "Mostrar _MENU_ registros",
                     sZeroRecords: "No se encontraron resultados",
@@ -61,7 +62,7 @@ function verCargas2(id)
             $('#myTable1').DataTable({
                 sPaginationType: "bootstrap", 
                 //aLengthMenu: [6],
-                order: [[ 0, "desc" ]],
+                order: [[ 3, "desc" ]],
                 language: {sProcessing: "Procesando...",
                     sLengthMenu: "Mostrar _MENU_ registros",
                     sZeroRecords: "No se encontraron resultados",

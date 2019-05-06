@@ -45,14 +45,14 @@ public function listSolicitud($id)
              `seguimiento_solicitud`.`id_seguimiento`,        
              
                \"
-              <button type=\'button\' class=\'btn btn-info btn-sm btn_sol\' data-title=\'Edit\' data-toggle=\'modal\' data-target=\'#myModalSol\' >
-               <span class=\'glyphicon glyphicon-play\'></span></button>
+              <button type=\'button\' class=\'btn btn-primary btn-sm btn_sol\' data-title=\'Edit\' data-toggle=\'modal\' data-target=\'#myModalSol\' >
+               <span class=\'glyphicon glyphicon-edit\'></span></button>
                </div>
                 \" 
                as editar,
                 \"
               <button type=\'button\' class=\'btn btn-info btn-sm btn_sin\' data-title=\'Editsin\' data-toggle=\'modal\' data-target=\'#myModalsinAccion\' >
-               <span class=\'glyphicon glyphicon-play\'></span></button>
+               <span class=\'glyphicon glyphicon-book\'></span></button>
                </div>
                 \" 
                as editar_sin_accion                 
@@ -64,7 +64,7 @@ public function listSolicitud($id)
               INNER JOIN `estado` ON (`estado`.`id_estado` = `seguimiento_solicitud`.`id_estado`)
               WHERE             
               `seguimiento_solicitud`.`id_solicitud` = ?
-              order by `seguimiento_solicitud`.`id_seguimiento` desc
+              order by `seguimiento_solicitud`.`id_seguimiento` asc
                ";
 
 		$rs = $con->dosql($sql, array($id));
@@ -180,7 +180,7 @@ public function listSolicitud2($estado)
              ifnull(`tbl_documentos`.`id_documento`, -1) as id_documento,                     
                \"
               <button type=\'button\' class=\'btn btn-info btn-sm btn_sol\' data-title=\'Edit\'>
-               <span class=\'glyphicon glyphicon-play\'></span></button>
+               <span class=\'glyphicon glyphicon-hand-right\'></span></button>
                </div>
                 \" 
                as ir               
@@ -222,13 +222,13 @@ public function listSolicitud2($estado)
 
                             if($rs->fields['id_documento'] != -1) 
                             {
-                              $case = '<a href="../subirpdf/archivo.php?id='.$rs->fields['id_documento'].'" target="iframe_a">
-                             <img src="../../../img/pdf.jpg" width="40" height="40" /></a>';
+                              $case = '<center><a href="../subirpdf/archivo.php?id='.$rs->fields['id_documento'].'" target="iframe_a">
+                             <img src="../../../img/pdf.jpg" width="40" height="40" /></a></center>';
 
                             }
                             else
                             {
-                            $case = '<span class="label label-info">Sin Archivo</span>';
+                            $case = '<center><span class="label label-info">Sin Archivo</span></center>';
                             }
 
 

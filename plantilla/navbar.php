@@ -38,8 +38,8 @@
                 </a>
                     <ul class="dropdown-menu">
                       <li><a href="../solicitud_admin/admin_solicitud.php">Revisar Solicitudes</a></li>
-                      <li class="divider"></li>
-                     <!-- <li><a href="../revisarpdf">Revisar Archivos</a></li>-->
+                    <!--  <li class="divider"></li>
+                      <li><a href="../revisarpdf">Revisar Archivos</a></li>-->
                     </ul>
 
               <!--<li class="dropdown">

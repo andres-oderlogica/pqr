@@ -160,7 +160,8 @@ $('#tabla').hide();
                     console.log(id)
                     //$("#valor_estado").val(id);                  
                     $('#tabla').show();
-                    verCargas2(id)      
+                    verCargas2(id)  
+                    verCargas("");    
              });
 
     });
